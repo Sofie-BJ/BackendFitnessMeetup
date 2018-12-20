@@ -1,0 +1,34 @@
+<div class="background" *ngIf="meetup;else loading">
+  <div class="header detailContent">
+    <div class="headerInfo">
+      <h1>{{ meetup.title }}</h1>
+      <div class="detailsDiv">
+        <p>Hosted by: {{ meetup.owner.name }}</p>
+        <p>When: {{ meetup.date | date:"dd/MM" }} at {{ meetup.date | date:"HH:mm" }}</p>
+      </div>
+    </div>
+    <div class="joinDiv" align="right">
+      <div *ngIf="!isParticipant">
+        <button class="joinButton" (click)="joinMeetup()">Join</button>
+        <p>Only TODO spots left!</p>
+      </div>   
+    </div>
+  </div>
+  <div class="detailContent">
+    <h3>Details</h3>
+    <p>{{ meetup.description }}</p>
+    <h3>Participants ({{ meetup.participants.length }})</h3>
+    <ul *ngIf="meetup.participants.length > 0;else noParticipants">
+      <li *ngFor="let p of meetup.participants">
+        {{ p.name }}
+      </li>
+    </ul>
+    <ng-template #noParticipants>
+      <p>No participants yet. Be the first to join!</p>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Please wait...</p>
+</ng-template>

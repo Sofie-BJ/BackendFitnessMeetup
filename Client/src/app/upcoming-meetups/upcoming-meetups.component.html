@@ -1,0 +1,25 @@
+<div class="background">
+  <h2>Upcoming meetups</h2>
+  <form (ngSubmit)="applyFilters()">
+    <select [(ngModel)]="sport" name="sportSelect">
+      <option>any</option>
+      <option *ngFor="let s of sports$ | async" [value]="s">{{ s }}</option>
+    </select>
+    <button type="submit">Apply filters</button>
+  </form>
+
+  <ng-container *ngIf="meetups$ | async; let meetups">
+    <a *ngFor="let m of meetups.body" [routerLink]="['/meetups', m.id]">
+      <div class="meetupDiv">
+        <h4 class="meetupTitle">{{ m.title }}</h4>
+        <div class="meetupInfo">
+          <p class="sportLabel">{{ m.sport | titlecase }}</p>
+          <p class="distanceLabel">5.4km</p>
+        </div>
+        <p class="dateLabel">On {{ m.date | date:"dd/MM" }} at {{ m.date | date:"HH:mm" }}</p>
+      </div>
+    </a>
+    <button (click)="prevClick()" *ngIf="offset > 0">Previous</button>
+    <button (click)="nextClick()" *ngIf="meetups.headers.get('Has-More-Meetups') == 'True'">Next</button>
+  </ng-container>
+</div>

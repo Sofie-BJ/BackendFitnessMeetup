@@ -1,0 +1,43 @@
+.background {
+  background-color: #e5e5e5;
+  padding: 8px;
+}
+
+.meetupDiv {
+  background-color: white;
+  padding: 16px;
+  margin-top: 8px;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transition: box-shadow 0.4s;
+  color: #232F34;
+}
+
+  .meetupDiv:hover {
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.2);
+  }
+
+a {
+  text-decoration: none;
+}
+
+.meetupTitle {
+  margin: 0;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.sportLabel {
+  float: left;
+}
+
+.distanceLabel {
+  float: right;
+}
+
+.meetupInfo {
+  overflow: hidden;
+}
+
+.dateLabel {
+  margin-bottom: 0;
+}

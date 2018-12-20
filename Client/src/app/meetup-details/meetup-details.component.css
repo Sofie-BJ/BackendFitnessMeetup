@@ -1,0 +1,36 @@
+.header {
+  background-color: white;
+  box-shadow: 0 1px 2px -2px gray;
+  overflow: hidden;
+}
+
+.background {
+  background-color: #f6f7f8;
+}
+
+.detailContent {
+  padding: 16px;
+}
+
+.detailsDiv {
+  clear: both;
+}
+
+.headerInfo {
+  float: left;
+}
+
+.joinDiv {
+  float: right;
+}
+
+.joinButton {
+  margin-top: 22px;
+  margin-bottom: 4px;
+  background-color: #4189c7;
+  border: none;
+  color: white;
+  padding: 8px 24px;
+  font-size: 1.5em;
+  border-radius: 4px;
+}

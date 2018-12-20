@@ -1,0 +1,24 @@
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+
+  <agm-marker [latitude]="lat" [longitude]="lng">
+    <agm-info-window>
+      <h3><strong>Howdy</strong></h3>
+      <p>You are here</p>
+    </agm-info-window>
+  </agm-marker>
+
+  <ng-container *ngIf="meetups$ | async; let meetups">
+    <a *ngFor="let m of meetups.body" [routerLink]="['/meetups', m.id]">
+      <!--<agm-marker [latitude]="m.latitude" [longitude]="m.longitude">-->
+      <agm-marker [latitude]="lat + +0.0005" [longitude]="lng + 0.0005">
+        <agm-info-window>
+          <h4>{{ m.title }}</h4>
+          <p>{{ m.sport | titlecase }}</p>
+          <p>5.4km</p>
+          <p>On {{ m.date | date:"dd/MM" }} at {{ m.date | date:"HH:mm" }}</p>
+        </agm-info-window>
+      </agm-marker>
+    </a>
+  </ng-container>
+
+</agm-map>
