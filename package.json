@@ -1,0 +1,22 @@
+{
+  "name": "fitness-meetup",
+  "version": "1.0.0",
+  "description": "This is 2.0 Fitness Meetup ",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "mssql": "^4.3.0",
+    "swagger-tools": "0.10.1",
+    "time-stamp": "^2.2.0"
+  }
+}

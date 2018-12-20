@@ -1,0 +1,271 @@
+---
+swagger: "2.0"
+info:
+  description: "This is 2.0 Fitness Meetup\n"
+  version: "1.0.0"
+  title: "Fitness Meetup"
+host: "localhost"
+basePath: "/"
+tags:
+- name: "meetups"
+  description: "Endpoints related to upcoming meetups"
+schemes:
+- "https"
+paths:
+  /meetups:
+    get:
+      tags:
+      - "meetups"
+      summary: "Get a list of upcoming meetups using paging."
+      description: "By default, thuis returns the next 25 upcoming meetups, and does\
+        \ not skip any."
+      operationId: "getUpcomingMeetUps"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "How many meetups to skip from the first upcoming meetup"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        format: "int32"
+      - name: "count"
+        in: "query"
+        description: "How many meetups to retrieve"
+        required: false
+        type: "integer"
+        default: 25
+        minimum: 1
+        format: "int32"
+      - name: "sport"
+        in: "query"
+        description: "The type of sport to filter meetups by. This filter is not used\
+          \ if not specified."
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Succesfully retrieved upcoming meetups"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Meetup"
+      x-swagger-router-controller: "Meetups"
+    post:
+      tags:
+      - "meetups"
+      summary: "Add a new meetup to the database"
+      operationId: "addMeetup"
+      parameters:
+      - in: "body"
+        name: "meetup"
+        required: true
+        schema:
+          $ref: "#/definitions/Meetup"
+      responses:
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "Meetups"
+  /meetups/{id}:
+    get:
+      tags:
+      - "meetups"
+      summary: "Get information about the meetup with the specified id"
+      operationId: "getMeetup"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The unique identifier of the meetup to retrieve"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "Succesfully retrieved the requested meetup"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Meetup"
+        400:
+          description: "The requested meetup does not exists"
+      x-swagger-router-controller: "Meetups"
+  /meetups/{id}/participants:
+    post:
+      tags:
+      - "meetups"
+      summary: "Adds a participant to a specific meetup"
+      operationId: "addParticipant"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The unique identifier for the specific meetup"
+        required: true
+        type: "integer"
+        format: "int32"
+      - in: "body"
+        name: "user"
+        description: "the user to add"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        405:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/User"
+      x-swagger-router-controller: "Meetups"
+  /sports:
+    get:
+      tags:
+      - "sports"
+      summary: "Get the sports categories that are supported by the server"
+      operationId: "getAllSports"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters: []
+      responses:
+        200:
+          description: "Succesfully retrieved all sports categories"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      x-swagger-router-controller: "Sports"
+  /users/{uid}:
+    get:
+      tags:
+      - "users"
+      summary: "Get the user by ID"
+      operationId: "getUser"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "uid"
+        in: "path"
+        description: "The unique id of the user to retrieve"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Succesfully retrieved the user"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "The requested user does not exist."
+      x-swagger-router-controller: "Users"
+  /users:
+    post:
+      tags:
+      - "users"
+      summary: "Add a new user to the database"
+      operationId: "addUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "The user to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Succesfully created the user"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid input"
+      x-swagger-router-controller: "Users"
+definitions:
+  Meetup:
+    type: "object"
+    required:
+    - "date"
+    - "id"
+    - "location"
+    - "owner"
+    - "title"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      sport:
+        type: "string"
+      owner:
+        $ref: "#/definitions/User"
+      participants:
+        type: "array"
+        items:
+          $ref: "#/definitions/User"
+      date:
+        type: "string"
+        format: "date-time"
+      location:
+        $ref: "#/definitions/Location"
+    example:
+      owner:
+        name: "name"
+        id: 6
+        email: "email"
+      date: "2000-01-23T04:56:07.000+00:00"
+      description: "description"
+      location:
+        lng: 5.962133916683182377482808078639209270477294921875
+        lat: 1.46581298050294517310021547018550336360931396484375
+      id: 0
+      title: "title"
+      sport: "sport"
+      participants:
+      - name: "name"
+        id: 6
+        email: "email"
+      - name: "name"
+        id: 6
+        email: "email"
+  Location:
+    type: "object"
+    required:
+    - "lat"
+    - "lng"
+    properties:
+      lat:
+        type: "number"
+        format: "double"
+      lng:
+        type: "number"
+        format: "double"
+    example:
+      lng: 5.962133916683182377482808078639209270477294921875
+      lat: 1.46581298050294517310021547018550336360931396484375
+  User:
+    type: "object"
+    required:
+    - "email"
+    - "id"
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      email:
+        type: "string"
+    example:
+      name: "name"
+      id: 6
+      email: "email"
