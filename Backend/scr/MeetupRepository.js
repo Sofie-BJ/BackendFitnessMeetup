@@ -15,16 +15,26 @@ exports.getUpcomingMeetups = function(offset, count, sport) {
     meetups.forEach(m => {
       var loc = m.location.split(":");
       let location = { lat: loc[0], lng: loc[1] };
-      m.participants = [];
-      mets.set(m.meetupId, m);
-      mets.get(m.meetupId).location = location;
-    });
 
-    participants.forEach(p => {
-      let part = { id: p.userId, name: p.name, email: p.email };
-      mets.get(p.meetupId).participants.push(part);
-    });
+      let newObj = {
+        id: m.meetupId,
+        title: m.title,
+        description: m.description,
+        location: location,
+        date: m.date,
+        owner: m.owner,
+        sport: m.sport,
+        participants: []
+      };
 
+      mets.set(m.meetupId, newObj);
+    });
+    if (participants) {
+      participants.forEach(p => {
+        let part = { id: p.userId, name: p.name, email: p.email };
+        mets.get(p.meetupId).participants.push(part);
+      });
+    }
     owners.forEach(o => {
       let owner = { id: o.userId, name: o.name, email: o.email };
       mets.get(o.meetupId).owner = owner;
@@ -46,28 +56,37 @@ exports.getMeetup = function(id) {
 
     var loc = meetup.location.split(":");
     var location = { lat: loc[0], lng: loc[1] };
+    var ownerorg = {
+      id: owner.userId,
+      name: owner.name,
+      email: owner.email
+    };
 
-    var meets = new Map();
-    meets.set(meetup.id, meetup);
-    meets.location = location;
-    meets.participants = [];
-    var ownerorg = { id: owner.id, name: owner.name, email: owner.email };
+    let newObj = {
+      id: meetup.meetupId,
+      title: meetup.title,
+      description: meetup.description,
+      location: location,
+      date: meetup.date,
+      owner: ownerorg,
+      sport: meetup.sport,
+      participants: []
+    };
 
-    participants.forEach(element => {
-      parts.push(element);
-    });
+    if (participants) {
+      participants.forEach(p => {
+        let part = { id: p.userId, name: p.name, email: p.email };
+        newObj.participants.push(part);
+      });
+    }
 
-    meets.owner = ownerorg;
-    meets.participants = parts;
-    console.log(meets);
-
-    return meets;
+    return newObj;
   });
 };
 
 exports.addMeetup = function(meetup) {
   return db.addMeetup(meetup).then(result => {
-    return result.recordset;
+    return result.recordset[0];
   });
 };
 
